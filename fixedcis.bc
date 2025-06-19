@@ -1,0 +1,52 @@
+// Input parameters
+polymerase_count = 250;
+pol_ii_size = 33;  // bp
+initiation_freq = 0.4;  // per second
+pause_location = 1;  // in bp x 100
+pause_dwell_time = 3;  // seconds
+pause_termination_probability = 0.8;
+pause_release_probability = 0.2;
+elongation_speed = 0.3333;  // bp x 100 per second
+processivity = 7200;  // seconds (time duration)
+uv_distance = 200;  // bp x 100
+damage_freq = 0.005; //1 damage per every 20kb
+repair_half_life = 14400;  // seconds
+probability_reuse_on_completion = 1;
+dissociation_time = 600;  // seconds
+gene_length = 1000;  // bp x 100 (100 kb)
+reuse_rate = 1;
+fast = 1000;
+cis_markingtime = 60; //second
+ 
+ 
+//model process
+//basic model: RNAPoll move (elongation) to the end of gene (there is a limit of gen length, the prcessivity is counted in h.
+//there is a interval between 2 consequtive initiation events, firing Poll one by one
+ 
+RNAPolII_prePause[i] = [i < pause_location] -> {elongation1, elongation_speed/10.}.RNAPolII_prePause[i+1] 
+                     + [i >= pause_location] -> ({terminate, fast*pause_termination_probability}.RNAPolII_pool[] + {release, fast*pause_release_probability}.{dwell, 1./pause_dwell_time}.RNAPolII_postPause[i+1,0]); 
+ 
+//p is the status flag, shift it to 1 when meet damage 
+RNAPolII_postPause[i,p] = {location![i],fast}.(
+                        [i < gene_length] -> (
+                            {~location?[i+1],fast}.(
+                                {~damage?[i+1], fast}.{elongation2, elongation_speed}.{location#[i],fast}.RNAPolII_postPause[i+1,p] 
+                                + [p==0] -> {damage?[i+1], fast}.{flipP,fast}.RNAPolII_postPause[i,1]
+                                + {release, 1./dissociation_time}.{release1,fast}.{location#[i],fast}.RNAPolII_pool[]
+                            )
+                            + {release, 1./dissociation_time}.{release2,fast}.{location#[i],fast}.RNAPolII_pool[]
+                        )
+                    + [i >= gene_length] -> {unbind, fast}.{location#[i],fast}.RNAPolII_pool[]
+                    ); 
+
+RNAPolII_pool[] = {start?[0],fast}.{reuse,initiation_freq}.RNAPolII_prePause[0]; 
+ 
+// damage is caused at first for only one time, so the number of damage points will decrease after repairing
+MakeDamage[i] = [i < gene_length] -> ({damage![i], fast/uv_distance}.{damageDNA,fast}.MakeDamage[i+1] 
+              + {pass, fast}.MakeDamage[i+1])
+              + [i==gene_length] -> {start![0],fast};
+RepairDamage[] = {damage?[0..1000](x), 1./repair_half_life}.{repairedPos,fast}.{damage#[x],fast}.RepairDamage[]; //beacon kills repaired points
+ 
+ 
+//system line
+MakeDamage[0] || polymerase_count*RNAPolII_pool[] || RepairDamage[];
