@@ -28,13 +28,21 @@ To run these simulations and analyze the output, you will need:
 
 ## Getting Started
 
-1.  **Clone the repository:**
+1.  **Download and install the Beacon Calculus Simulator (`bcs`):**
+    First, you need to download and compile the `bcs` simulator from the official repository:
     ```bash
-    git clone [https://github.com/shutongye/bcs_Pol.git](https://github.com/shutongye/bcs_Pol.git)
-    cd bcs_Pol
+    git clone https://github.com/MBoemo/bcs.git
+    cd bcs
+    git checkout v1.0.1
+    make
     ```
-2.  **(Optional) Compile `bcs`:**
-    Follow the instructions in the `bcs` repository to compile the simulator if you do not have a working executable.
+    This will create the `bcs` executable in the `bcs/bin` directory. Follow the complete installation instructions at [https://github.com/MBoemo/bcs](https://github.com/MBoemo/bcs) for detailed setup steps.
+
+2.  **Clone this repository:**
+    ```bash
+    git clone https://github.com/shutongye/bcs_Pol_II_phosphorylation.git
+    cd bcs_Pol_II_phosphorylation
+    ```
 3.  **Run a simulation:**
     Navigate to either the `cis` or `trans` directory and run a simulation. The `-s` flag sets the number of simulations,  `-t` allocates the number of threads to use and `-o` navigates to the output directory.
     ```bash
