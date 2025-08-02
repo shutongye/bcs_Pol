@@ -36,13 +36,13 @@ To run these simulations and analyze the output, you will need:
 2.  **(Optional) Compile `bcs`:**
     Follow the instructions in the `bcs` repository to compile the simulator if you do not have a working executable.
 3.  **Run a simulation:**
-    Navigate to either the `cis` or `trans` directory and run a simulation. The `-s` flag sets the random seed for reproducibility.
+    Navigate to either the `cis` or `trans` directory and run a simulation. The `-s` flag sets the number of simulations,  `-t` allocates the number of threads to use and `-o` navigates to the output directory.
     ```bash
     # Example for cis model
-    /path/to/bcs/bin/bcs -s 1 -o my_cis_output.bcs cis_model.bc
+    /path/to/bcs/bin/bcs -s 1 -t 48 -o my_cis_output.bcs cis_model.bc
 
     # Example for trans model
-    /path/to/bcs/bin/bcs -s 1 -o my_trans_output.bcs trans_model.bc
+    /path/to/bcs/bin/bcs -s 1 -t 48 -o my_trans_output.bcs trans_model.bc
     ```
 4.  **Analyze the output:**
     Use the provided Python scripts (e.g., `analysis.py`) to process the `.bcs` output files. These scripts will extract Pol II positions, calculate densities, and generate plots comparing the models.
