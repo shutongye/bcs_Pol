@@ -13,10 +13,10 @@ The models simulate Pol II movement, damage encounter, signal propagation via be
 
 ## Models
 
-The repository contains the following Beacon Calculus model files:
+The repository contains the following Beacon Calculus model files (`bcs_Pol_ii_models/`):
 
-* **`cis_model.bc`**: A model where Pol II phosphorylation occurs only at the immediate site of DNA damage. This serves as the baseline for comparison.
-* **`trans_model.bc`**: An advanced model that incorporates a `phos` beacon-based signaling mechanism. When a Pol II encounters DNA damage, it launches a `phos` beacon. Another Pol II, at a specific downstream location (`i=2` or 200 bp), can detect this signal and become phosphorylated. This model also uses a `d` flag to ensure that each Pol II instance only emits a damage signal once per encounter, preventing redundant signaling.
+* **`cis.bc`**: A model where Pol II phosphorylation occurs only at the immediate site of DNA damage. This serves as the baseline for comparison.
+* **`trans.bc`**: An advanced model that incorporates a `phos` beacon-based signaling mechanism. When a Pol II encounters DNA damage, it launches a `phos` beacon. Another Pol II, at a specific downstream location (`i=2` or 200 bp), can detect this signal and become phosphorylated. This model also uses a `d` flag to ensure that each Pol II instance only emits a damage signal once per encounter, preventing redundant signaling.
 
 ## Requirements
 
@@ -57,4 +57,4 @@ To run these simulations and analyze the output, you will need:
 
 ## License
 
-This project is licensed under the MIT License. This is a permissive license that allows for free use, modification, and distribution of the software, and is a standard for open-source projects.
+This project is licensed under the MIT License. 
