@@ -43,7 +43,7 @@ RNAPolII_postPause[i,p,d] = {location![i], fast}.(
                             )
                         + {release, 1./dissociation_time}.{release2, fast}.{location#[i], fast}.RNAPolII_pool[]
                         )
-                    + [i >= gene_length] -> {unbind, fast}.{location#[i],f ast}.RNAPolII_pool[]
+                    + [i >= gene_length] -> {unbind, fast}.{location#[i], fast}.RNAPolII_pool[]
                     ); 
 
 RNAPolII_pool[] = {start?[0],fast}.{reuse, initiation_freq}.RNAPolII_prePause[0]; 
